@@ -249,8 +249,8 @@ This is $J$ with $\lambda=\sigma^2/\tau^2$. Maximizing $P$ is the same as minimi
 \checked
 
 \section{The Data}
-% Confirm these numbers by running: python src/load_data.py
-MovieLens 100K from GroupLens (file \texttt{u.data}).
+% Numbers from: python src/load_data.py
+MovieLens 100K from GroupLens (file \texttt{u.data}). Code: \texttt{src/load\_data.py}.
 \begin{center}\small
 \begin{tabular}{ll}
 \toprule
@@ -259,21 +259,22 @@ Columns & user (int), movie (int), rating (int, 1--5), timestamp (int)\\
 Users $\times$ movies & $943\times1682$\\
 Fraction of $R$ known & about 6.3\%\\
 Missing values in the file & none\\
-Ratings per user & at least 20\\
+Ratings per user (min / median / max) & 20 / 65 / 737\\
+Ratings per movie (min / median / max) & 1 / 27 / 583\\
 Count of 1, 2, 3, 4, 5 stars & 6110, 11370, 27145, 34174, 21201\\
 Average rating & about 3.53\\
-Train / test & random 80\% / 20\%, seed 0\\
+Train / test & random 80\% / 20\%, seed 0 (79{,}873 / 20{,}127)\\
 \bottomrule
 \end{tabular}
 \end{center}
 Most ratings are 3 or 4, which is why we subtract the average first (A6) and why the missing-at-random assumption is shaky (A2).
 
-\IfFileExists{../figures/rating_hist.png}{%
 \begin{figure}[H]\centering
-\includegraphics[width=0.45\textwidth]{rating_hist.png}\hfill
-\includegraphics[width=0.45\textwidth]{sparsity.png}
-\caption{Left: how many of each rating. Right: which entries of $R$ are known.}
-\end{figure}}{\noindent\textit{[Plots go here after running \texttt{src/load\_data.py}.]}}
+\includegraphics[width=0.48\textwidth]{rating_hist.png}\hfill
+\includegraphics[width=0.48\textwidth]{sparsity.png}
+\caption{Left: how many of each rating. Right: which entries of $R$ are known (black = known). Only about 6.3\% of $R$ is filled in.}
+\label{fig:data}
+\end{figure}
 
 \section{Simulation Check}
 \textbf{Setup.} We made a true rating matrix $R_{\text{true}}$ ($100\times80$) as the product of two random matrices with 3 columns, so its rank is exactly 3. We added noise with standard deviation 0.1 and kept only about 30\% of the entries (2281 known). Then we ran ALS with $k=3$, $\lambda=1$, for 50 sweeps. Seed: \texttt{np.random.default\_rng(0)}. Code: \texttt{src/simulation.py}.
