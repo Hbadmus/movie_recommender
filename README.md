@@ -1,20 +1,23 @@
 # Movie Recommender with Matrix Factorization
 
-Predict missing movie ratings with low-rank matrix factorization, trained by
-alternating least squares (ALS), built from scratch with NumPy.
+**Team:** Hakim Badmus, Doyin Okwesa
 
-## Repository layout
+We predict missing movie ratings by splitting the rating matrix into a user matrix
+and a movie matrix (matrix factorization). We train it with alternating least
+squares (ALS), written from scratch in NumPy.
+
+## Folders
 
 ```
-src/       load_data.py (load + describe MovieLens), simulation.py (known-truth check)
-data/      raw data goes here (not committed)
-figures/   plots written by the scripts
-docs/      Overleaf report (iteration2_report.tex / .pdf)
+src/       Python code
+data/      the dataset goes here (not uploaded to GitHub)
+figures/   plots made by the code
+docs/      Overleaf report (PDF + .tex) and Excel project plan
 ```
 
 ## Setup
 
-Only `numpy`, `pandas`, `matplotlib` and `scipy` are used.
+We only use numpy, pandas, matplotlib and scipy.
 
 ```
 pip install numpy pandas matplotlib scipy
@@ -22,36 +25,48 @@ pip install numpy pandas matplotlib scipy
 
 ## Getting the data
 
-MovieLens 100K is not committed (add `data/` to `.gitignore`).
+The dataset is too big to keep in the repo, so download it yourself:
 
 1. Download `ml-100k.zip` from https://grouplens.org/datasets/movielens/100k/
-2. Unzip it so the file sits at `data/ml-100k/u.data`
+2. Unzip it into the `data/` folder so this file exists: `data/ml-100k/u.data`
 
-## Running
+## Running the code
 
-From the repo root:
+Run these from the main repo folder:
 
 ```
-python src/simulation.py   # Iteration 2 simulation check, writes figures/sim_*.png
-python src/load_data.py    # dataset description + figures/rating_hist.png etc.
+python src/load_data.py     # describes the dataset, saves rating_hist.png and sparsity.png
+python src/simulation.py    # simulation check, saves sim_objective.png
 ```
 
-Seeds are fixed with `np.random.default_rng(0)`, so everyone gets the same numbers.
+The random seed is fixed (`np.random.default_rng(0)`), so everyone gets the same numbers.
 
-## Overleaf
+## What each script does
 
-Upload `docs/iteration2_report.tex` and the `figures/` folder, keeping the
-folder structure, or copy the PNGs next to the .tex file.
+- **load_data.py**: loads MovieLens 100K, prints the size, column types, missing values
+  and rating counts, splits the ratings 80/20 into train and test, and makes two plots.
+- **simulation.py**: builds a fake rating matrix where we know the true answer (rank 3),
+  hides 70% of it, runs ALS, and checks the results from our derivations (Q1 to Q5).
+
+## Report
+
+The full math is in `docs/iteration2_report.pdf`: notation, definitions, assumptions,
+derivations for Q1 to Q5, a bonus probability result, the algorithm, the data
+description and the simulation check.
 
 ## Task list
 
 | ID | Task | Owner | Checker | Status |
 |----|------|-------|---------|--------|
-| T1 | Notation and definitions | Hakim | | done |
-| T2 | Assumptions | Hakim | | done |
-| T3 | Q1-Q3 derivations | Hakim | | done |
-| T4 | Q4-Q5 derivations + MAP bonus | Hakim | | done |
-| T5 | Algorithm as math | Hakim | | done |
-| T6 | Real data loading and description | Hakim | | run on real data |
-| T7 | Simulation check | Hakim | | done |
-| T8 | Check all derivations | | | open |
+| T1 | Notation and definitions | Hakim | Doyin | done |
+| T2 | Assumptions | Doyin | Hakim | done |
+| T3 | Q1: objective | Hakim | Doyin | done |
+| T4 | Q2: solve for one user | Hakim | Doyin | done |
+| T5 | Q3: positive definite | Hakim | Doyin | done |
+| T6 | Q4: ALS never increases J | Doyin | Hakim | done |
+| T7 | Q5: SVD vs. missing data | Doyin | Hakim | done |
+| T8 | Bonus: where lambda comes from | Doyin | Hakim | done |
+| T9 | Algorithm as math | Hakim | Doyin | done |
+| T10 | Data loading and description | Hakim | Doyin | done |
+| T11 | Simulation check | Hakim | Doyin | done |
+| T12 | Excel project plan | Hakim | Doyin | to do |
