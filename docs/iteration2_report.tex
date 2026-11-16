@@ -12,11 +12,11 @@
 \newtheorem{definition}{Definition}
 
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\checked}{\par\smallskip\noindent\textit{Written by: Hakim Badmus. \quad Checked by: \underline{\hspace{4cm}}}\par}
+\newcommand{\checked}[2]{\par\smallskip\noindent\textit{Written by: #1. \quad Checked by: #2.}\par}
 \graphicspath{{../figures/}{figures/}}
 
 \title{Movie Recommender with Matrix Factorization\\[2pt]\large Iteration 2: The Math}
-\author{Hakim Badmus \and \underline{\hspace{3.5cm}}}
+\author{Hakim Badmus \and Doyin Okwesa}
 \date{\today}
 
 \begin{document}
@@ -88,7 +88,7 @@ On a set $T$ of test ratings, $\text{RMSE}=\sqrt{\frac{1}{|T|}\sum_{(u,i)\in T}(
 \begin{definition}[Normal distribution]
 $x\sim\mathcal N(\mu,\sigma^2)$ has density $\propto\exp\!\big(-\frac{(x-\mu)^2}{2\sigma^2}\big)$.
 \end{definition}
-\checked
+\checked{Hakim Badmus}{Doyin Okwesa}
 
 \section{Assumptions}
 \begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=*]
@@ -116,7 +116,7 @@ $x\sim\mathcal N(\mu,\sigma^2)$ has density $\propto\exp\!\big(-\frac{(x-\mu)^2}
 \emph{If false:} predictions get pulled toward 0, far below the average rating of about 3.5.
 \emph{Fix:} subtract the average rating before training and add it back after (Step 0 of the algorithm).
 \end{enumerate}
-\checked
+\checked{Doyin Okwesa}{Hakim Badmus}
 
 \section{Iteration 2 -- Math Questions}
 
@@ -134,7 +134,7 @@ J(U,V)=\sum_{(u,i)\in\Omega}\big(r_{ui}-\mathbf u_u^\top\mathbf v_i\big)^2+\lamb
 J=\sum_{u=1}^m\underbrace{\Big[\sum_{i\text{ rated by }u}(r_{ui}-\mathbf v_i^\top\mathbf u_u)^2+\lambda\|\mathbf u_u\|^2\Big]}_{J_u(\mathbf u_u)}+\lambda\|V\|_F^2 .
 \]
 If $V$ is fixed, each $\mathbf u_u$ only shows up in its own $J_u$. So we can solve for each user on their own. The same is true for movies when $U$ is fixed.
-\checked
+\checked{Hakim Badmus}{Doyin Okwesa}
 
 \subsection*{Q2. Solve for one user}
 \begin{theorem}
@@ -162,7 +162,7 @@ A\,\mathbf u_u&=V_u^\top\mathbf r_u && \text{[rearrange: the normal equations]}\
 This is a minimum and not a maximum: the second derivative is $2A$, which is positive definite (Q3), so $J_u$ is a bowl shape with exactly one lowest point.
 \end{proof}
 \noindent\textbf{In plain words:} this is ridge regression. The user's ratings are the $y$ values, the vectors of the movies they rated are the $x$ values, and $\mathbf u_u$ is the coefficient vector. For movies, swap the roles: $\mathbf v_i=(U_i^\top U_i+\lambda I)^{-1}U_i^\top\mathbf r_i$.
-\checked
+\checked{Hakim Badmus}{Doyin Okwesa}
 
 \subsection*{Q3. $V_u^\top V_u+\lambda I$ is positive definite}
 \begin{theorem}
@@ -180,7 +180,7 @@ So $A$ is positive definite. Now suppose $A\mathbf x=\mathbf 0$. Then $\mathbf x
 \end{proof}
 \noindent\textbf{Extra fact:} the same steps show $\mathbf x^\top A\mathbf x\ge\lambda\|\mathbf x\|^2$, so every eigenvalue of $A$ is at least $\lambda$. We check this in the simulation.\\
 \textbf{Why $\lambda$ matters:} without it, a user who rated fewer than $k$ movies gives a $V_u^\top V_u$ that cannot be inverted.
-\checked
+\checked{Hakim Badmus}{Doyin Okwesa}
 
 \subsection*{Q4. ALS never makes $J$ worse}
 ALS repeats two steps: (1) fix $V$, solve for every user with Q2; (2) fix $U$, solve for every movie the same way.
@@ -194,7 +194,7 @@ After each step, $J$ is less than or equal to what it was before.
 \textbf{It settles down:} $J$ is made of squares, so $J\ge0$. A sequence that keeps going down but cannot go below 0 must level off [monotone convergence theorem].
 \end{proof}
 \noindent\textbf{Note:} this shows $J$ levels off, not that it reaches the best possible value. ALS can get stuck in a local minimum. Also, many different $U,V$ give the same $UV^\top$, so we compare $UV^\top$ to the truth, not $U$ itself.
-\checked
+\checked{Doyin Okwesa}{Hakim Badmus}
 
 \subsection*{Q5. Why the SVD works for a full matrix but not with missing ratings}
 \textbf{Eckart--Young theorem.} If every entry of $R$ is known, the truncated SVD $R_k$ is the best rank-$k$ approximation: no other rank-$k$ matrix $B$ has a smaller $\|R-B\|_F^2$. So for a full matrix, the SVD solves the problem directly with no iteration.
@@ -212,7 +212,7 @@ ALS only uses the first part, which is why it does better. That objective has no
 \item Filling $?=1$ gives $\begin{pmatrix}1&1\\1&1\end{pmatrix}$, which is rank 1 and matches every known rating exactly.
 \item Filling $?=0$ gives $\begin{pmatrix}1&0\\1&1\end{pmatrix}$. Its singular values squared are $2.618$ and $0.382$, so the best rank-1 SVD fit still has error $0.382$, misses the known ratings, and predicts well under 1 for the blank.
 \end{itemize}
-\checked
+\checked{Doyin Okwesa}{Hakim Badmus}
 
 \section{Extra: Where $\lambda$ Comes From (Probability)}
 \begin{theorem}
@@ -230,7 +230,7 @@ Multiply by $2\sigma^2$ (a positive number, so the best $U,V$ do not change):
 This is $J$ with $\lambda=\sigma^2/\tau^2$. Maximizing $P$ is the same as minimizing $-\log P$ because $-\log$ always goes down when its input goes up.
 \end{proof}
 \noindent\textbf{In plain words:} noisier ratings or a stronger belief that vectors are small both mean a bigger $\lambda$.
-\checked
+\checked{Doyin Okwesa}{Hakim Badmus}
 
 \section{The Algorithm}
 \begin{enumerate}[label=(\arabic*), start=0]
@@ -246,7 +246,7 @@ This is $J$ with $\lambda=\sigma^2/\tau^2$. Maximizing $P$ is the same as minimi
 \item \textbf{Test.} Compute RMSE on the held-out 20\%.
 \end{enumerate}
 \textbf{Cost of one sweep.} Each known rating is used once in the user step and once in the movie step, so one sweep is about $2|\Omega|k^2+(m+n)k^3$ operations. With 80{,}000 training ratings and $k=10$, that is roughly 17 million operations, which takes well under a second.
-\checked
+\checked{Hakim Badmus}{Doyin Okwesa}
 
 \section{The Data}
 % Numbers from: python src/load_data.py
