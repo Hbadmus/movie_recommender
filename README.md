@@ -71,4 +71,4 @@ description and the simulation check.
 | T11 | Simulation check | Hakim | Doyin | done |
 | T12 | Excel project plan | Hakim | Doyin | to do |
 
-* used Claude for formatting, cleaning up and debugging
+"*" used Claude for formatting, cleaning up and debugging
