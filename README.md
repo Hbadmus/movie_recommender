@@ -1,6 +1,6 @@
 # Movie Recommender with Matrix Factorization
 
-**Team:** Hakim Badmus, Doyin Okwesa
+**Team:** Hakim Badmus, Doyin Okwesa *
 
 We predict missing movie ratings by splitting the rating matrix into a user matrix
 and a movie matrix (matrix factorization). We train it with alternating least
@@ -70,3 +70,5 @@ description and the simulation check.
 | T10 | Data loading and description | Hakim | Doyin | done |
 | T11 | Simulation check | Hakim | Doyin | done |
 | T12 | Excel project plan | Hakim | Doyin | to do |
+
+* used Claude for formatting, cleaning up and debugging
